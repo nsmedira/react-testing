@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // the following functions sourced from Voices src/utils/Util.jsx
 
 export function sumArrayByKey(array = [], key = "") {
@@ -15,3 +17,17 @@ export function arrayOfField(arr, field) {
 
   return newArr;
 }
+
+// https://www.nps.gov/subjects/developer/api-documentation.htm#/parks/getPark
+export const getNationalParks = async (query) => {
+  try {
+    const resp = await axios.get(
+      `https://developer.nps.gov/api/v1/parks?q=${encodeURIComponent(
+        query
+      )}&api_key=PtIddeWbrheOX0MBGLaaBrDtfX2IfZJXtf1iJ9Qb`
+    );
+    return resp;
+  } catch (e) {
+    throw e;
+  }
+};

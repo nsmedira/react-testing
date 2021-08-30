@@ -1,5 +1,5 @@
 import { expect } from "@jest/globals";
-import { arrayOfField, sumArrayByKey } from "../functions";
+import { arrayOfField, getNationalParks, sumArrayByKey } from "../functions";
 
 test("given an array of uniformly shaped objects, sum the values contained at a specified key", () => {
   // arrange
@@ -42,4 +42,31 @@ test("convert array of objects to array of specified field values", () => {
   expect(actualValue).toContain("Belize");
   expect(actualValue[2] === "Bolivia").toBeTruthy();
   expect(actualValue[3]).not.toBeDefined();
+});
+
+test("search national parks", (done) => {
+  // arrange
+  const input = "Great Sand Dunes";
+  const expectedResponseKeys = ["total", "limit", "start", "data"];
+  const expectedQueryResultKeys = ["id", "url", "parkCode", "description"];
+
+  // act
+  getNationalParks(input)
+    .then((resp) => {
+      const actualResponseKeys = Object.keys(resp.data);
+      const actualQueryResultKeys = Object.keys(resp.data.data[0]);
+
+      try {
+        // assertions
+        expect(resp).toBeDefined();
+        expect(actualResponseKeys).toEqual(expectedResponseKeys);
+        for (const key of expectedQueryResultKeys) {
+          expect(actualQueryResultKeys).toContain(key);
+        }
+        done();
+      } catch (e) {
+        done(e);
+      }
+    })
+    .catch((e) => done(e));
 });

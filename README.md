@@ -93,3 +93,22 @@ multiple `expect()` assertions can be made within a single call to `test()`. All
 - Arrange: declare the input to be passed to the function being tested. also define expected output
 - Act: pass input variable into the function being tested and store result in new variable
 - Assert: use `expect()` assertion function and `toEqual()` matcher to compare values of expected output with actual output
+
+#### Testing Async Code
+
+The second argument of `test()` takes an optional function parameter `done` which, if provided, can be used to terminate the test.
+
+Jest will wait for `done()` or timeout to complete the test.
+
+Wrap assertions in `try/catch`. In `try`, perform `done()` after the assertion. In `catch`, perform `done(error)`.
+
+```js
+test("async test", (done) => {
+  try {
+    expect(actualValue).toBe(expectedValue);
+    done();
+  } catch (e) {
+    done(e);
+  }
+});
+```

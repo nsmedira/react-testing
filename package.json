@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "axios": "^0.21.1",
     "jest": "^27.1.0"
   },
   "scripts": {
