@@ -4,11 +4,23 @@
 
 ## Jest
 
-Install Jest
+### Install Jest
 
 - `npm install jest --save-dev`
-  `-g` flag if you want command line tools
+  - `-g` flag if you want command line tools
+- `yarn add jest`
+  - `yarn global add jest` if you want command line tools
 - Jest is included in with `create-react-app`
+
+#### Init/Config
+
+Run `jest --init` to configure project for Jest
+
+#### [Babel](https://jestjs.io/docs/getting-started#using-babel)
+
+`yarn add --dev babel-jest @babel/core @babel/preset-env`
+
+### Running Tests
 
 The Jest API looks for files that are either inside of a `__tests__/` directory or any file that ends in either `.test.js` or `.specs.js`.
 
@@ -41,3 +53,35 @@ Custom script in `package.json` that always runs jest with `--coverage` flag
 ### Unit Testing
 
 When unit testing, each function should be tested in isolation.
+
+#### `test()`
+
+`test()` function is used to create separate containers for testing logic.
+
+`test()` takes three arguments
+
+- a string describing what is being tested
+  - state purpose of the test. do not describe implementation of function, only desired result
+- a callback function containing assertions and other testing logic
+- an optional timeout in milliseconds that specifies how long a test should wait before automatically aborting. default is 5000ms
+
+#### `expect()`
+
+`expect()` function asserts how we expect our program to run. used every time we write a test
+
+`expect()` is used in conjunction with _matcher_ methods
+
+- `toBe()` - compare simple data types for equality
+- `toEqual()` - deep equality comparisons (objects, arrays, etc)
+
+```js
+expect(2 + 2).toBe(4);
+```
+
+multiple `expect()` assertions can be made within a single call to `test()`. All assertions must pass for unit test to pass.
+
+#### Arrange, Act, Assert pattern
+
+- Arrange: declare the input to be passed to the function being tested. also define expected output
+- Act: pass input variable into the function being tested and store result in new variable
+- Assert: use `expect()` assertion function and `toEqual()` matcher to compare values of expected output with actual output
