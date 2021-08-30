@@ -19,8 +19,12 @@ export function arrayOfField(arr, field) {
 }
 
 // https://www.nps.gov/subjects/developer/api-documentation.htm#/parks/getPark
-export const getNationalParks = async (query) => {
+export const getNationalParks = async (query, forceFailure = false) => {
   try {
+    if (forceFailure) {
+      throw new Error("force failure");
+    }
+
     const resp = await axios.get(
       `https://developer.nps.gov/api/v1/parks?q=${encodeURIComponent(
         query

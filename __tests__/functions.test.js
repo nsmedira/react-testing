@@ -44,29 +44,56 @@ test("convert array of objects to array of specified field values", () => {
   expect(actualValue[3]).not.toBeDefined();
 });
 
-test("search national parks", (done) => {
-  // arrange
-  const input = "Great Sand Dunes";
-  const expectedResponseKeys = ["total", "limit", "start", "data"];
-  const expectedQueryResultKeys = ["id", "url", "parkCode", "description"];
+// arrange national parks API test
+const config_nationalParksTest = {
+  input: "Great Sand Dunes",
+  expectedResponseKeys: ["total", "limit", "start", "data"],
+  expectedQueryResultKeys: ["id", "url", "parkCode", "description"],
+};
 
+const callback_nationalParksTest = (resp, done = () => {}) => {
+  const actualResponseKeys = Object.keys(resp.data);
+  const actualQueryResultKeys = Object.keys(resp.data.data[0]);
+
+  try {
+    // assertions
+    expect(resp).toBeDefined();
+    expect(actualResponseKeys).toEqual(
+      config_nationalParksTest.expectedResponseKeys
+    );
+    for (const key of config_nationalParksTest.expectedQueryResultKeys) {
+      expect(actualQueryResultKeys).toContain(key);
+    }
+    done();
+  } catch (e) {
+    done(e);
+  }
+};
+
+// use done parameter
+test("search national parks with done parameter", (done) => {
   // act
-  getNationalParks(input)
+  getNationalParks(config_nationalParksTest.input)
     .then((resp) => {
-      const actualResponseKeys = Object.keys(resp.data);
-      const actualQueryResultKeys = Object.keys(resp.data.data[0]);
-
-      try {
-        // assertions
-        expect(resp).toBeDefined();
-        expect(actualResponseKeys).toEqual(expectedResponseKeys);
-        for (const key of expectedQueryResultKeys) {
-          expect(actualQueryResultKeys).toContain(key);
-        }
-        done();
-      } catch (e) {
-        done(e);
-      }
+      callback_nationalParksTest(resp, done);
     })
     .catch((e) => done(e));
+});
+
+// return promise from test function
+test("search national parks with async/await", async () => {
+  // act
+  try {
+    const resp = await getNationalParks(config_nationalParksTest.input);
+    callback_nationalParksTest(resp);
+  } catch (e) {
+    throw e;
+  }
+});
+
+test("mock failure of national parks request", async () => {
+  // assertions
+  expect(() => {
+    getNationalParks(config_nationalParksTest.input, true);
+  }).toThrowError;
 });

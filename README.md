@@ -112,3 +112,9 @@ test("async test", (done) => {
   }
 });
 ```
+
+The second argument of `test()` can accept a `done` function parameter or return a Promise, but not both.
+
+#### Error handling
+
+[How to test a function that's expected to throw an error in jest](https://medium.com/@afolabiwaheed/how-to-test-a-function-thats-expected-to-throw-error-in-jest-2419cc7c6462)
