@@ -67,18 +67,26 @@ When unit testing, each function should be tested in isolation.
 
 #### `expect()`
 
+[Documentation](https://jestjs.io/docs/expect)
+
 `expect()` function asserts how we expect our program to run. used every time we write a test
 
 `expect()` is used in conjunction with _matcher_ methods
-
-- `toBe()` - compare simple data types for equality
-- `toEqual()` - deep equality comparisons (objects, arrays, etc)
 
 ```js
 expect(2 + 2).toBe(4);
 ```
 
 multiple `expect()` assertions can be made within a single call to `test()`. All assertions must pass for unit test to pass.
+
+##### Matcher Methods
+
+- `toBe()` - compare simple data types for equality
+- `toEqual()` - deep equality comparisons (objects, arrays, etc)
+- `toBeDefined()`
+- `toBeTruthy()`
+- `not` - used before another matcher to verify that the opposite result is true
+- `toContain()` - used to verify that an item is in an array
 
 #### Arrange, Act, Assert pattern
 
