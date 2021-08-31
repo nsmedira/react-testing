@@ -1,4 +1,4 @@
-import { expect } from "@jest/globals";
+import { test, expect } from "@jest/globals";
 import { arrayOfField, getNationalParks, sumArrayByKey } from "../functions";
 
 test("given an array of uniformly shaped objects, sum the values contained at a specified key", () => {
@@ -51,31 +51,27 @@ const config_nationalParksTest = {
   expectedQueryResultKeys: ["id", "url", "parkCode", "description"],
 };
 
-const callback_nationalParksTest = (resp, done = () => {}) => {
-  const actualResponseKeys = Object.keys(resp.data);
-  const actualQueryResultKeys = Object.keys(resp.data.data[0]);
-
-  try {
-    // assertions
-    expect(resp).toBeDefined();
-    expect(actualResponseKeys).toEqual(
-      config_nationalParksTest.expectedResponseKeys
-    );
-    for (const key of config_nationalParksTest.expectedQueryResultKeys) {
-      expect(actualQueryResultKeys).toContain(key);
-    }
-    done();
-  } catch (e) {
-    done(e);
-  }
-};
-
 // use done parameter
 test("search national parks with done parameter", (done) => {
   // act
   getNationalParks(config_nationalParksTest.input)
     .then((resp) => {
-      callback_nationalParksTest(resp, done);
+      const actualResponseKeys = Object.keys(resp.data);
+      const actualQueryResultKeys = Object.keys(resp.data.data[0]);
+
+      try {
+        // assertions
+        expect(resp).toBeDefined();
+        expect(actualResponseKeys).toEqual(
+          config_nationalParksTest.expectedResponseKeys
+        );
+        for (const key of config_nationalParksTest.expectedQueryResultKeys) {
+          expect(actualQueryResultKeys).toContain(key);
+        }
+        done();
+      } catch (e) {
+        done(e);
+      }
     })
     .catch((e) => done(e));
 });
@@ -83,11 +79,17 @@ test("search national parks with done parameter", (done) => {
 // return promise from test function
 test("search national parks with async/await", async () => {
   // act
-  try {
-    const resp = await getNationalParks(config_nationalParksTest.input);
-    callback_nationalParksTest(resp);
-  } catch (e) {
-    throw e;
+  const resp = await getNationalParks(config_nationalParksTest.input);
+  const actualResponseKeys = Object.keys(resp.data);
+  const actualQueryResultKeys = Object.keys(resp.data.data[0]);
+
+  // assertions
+  expect(resp).toBeDefined();
+  expect(actualResponseKeys).toEqual(
+    config_nationalParksTest.expectedResponseKeys
+  );
+  for (const key of config_nationalParksTest.expectedQueryResultKeys) {
+    expect(actualQueryResultKeys).toContain(key);
   }
 });
 
